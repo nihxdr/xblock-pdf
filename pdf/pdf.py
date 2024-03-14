@@ -4,7 +4,7 @@ import pkg_resources
 from django.template import Context, Template
 
 from xblock.core import XBlock
-from xblock.fields import Scope, String, Boolean
+from xblock.fields import Scope, String, Boolean, Integer
 from xblock.fragment import Fragment
 from xblockutils.resources import ResourceLoader
 from .utils import _, bool_from_str, DummyTranslationService, is_all_download_disabled
@@ -35,6 +35,13 @@ class PdfBlock(XBlock):
         default=_("https://tutorial.math.lamar.edu/pdf/Trig_Cheat_Sheet.pdf"),
         scope=Scope.content,
         help=_("The URL for your PDF.")
+    )
+
+    pdf_height = Integer(
+        display_name=_("PDF Height"),
+        default=600,  # Default height
+        scope=Scope.settings,
+        help=_("The height of the PDF viewer in pixels.")
     )
 
     allow_download = Boolean(
@@ -92,6 +99,7 @@ class PdfBlock(XBlock):
         context = {
             'display_name': self.display_name,
             'url': self.url,
+            'pdf_height': self.pdf_height,
             'allow_download': self.allow_download,
             'disable_all_download': is_all_download_disabled(),
             'source_text': self.source_text,

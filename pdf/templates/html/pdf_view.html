@@ -1,11 +1,13 @@
 {% load i18n %}
 <div class="pdf_block">
   <h2>{{ display_name }}</h2>
-  <object data="{{ url }}" type="application/pdf" width="100%" height="600">
-    <p>
-      {% trans "It appears you don't have a PDF plugin for this browser." %}
-    </p>
-  </object>
+  <div id="pdf-viewer" style="width: 100%; height: {{ pdf_height }}px;">
+    <object data="{{ url }}" type="application/pdf" width="100%" height="100%">
+      <p>
+        {% trans "It appears you don't have a PDF plugin for this browser." %}
+      </p>
+    </object>
+  </div>
   {% if not disable_all_download %}
   <ul>
     {% if allow_download %}
@@ -21,3 +23,10 @@
   </ul>
   {% endif %}
 </div>
+
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+$( function() {
+    $( "#pdf-viewer" ).resizable();
+} );
+</script>
